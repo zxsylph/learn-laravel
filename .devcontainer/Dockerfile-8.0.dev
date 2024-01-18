@@ -1,0 +1,20 @@
+FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/php:8.0-bullseye
+
+RUN docker-php-ext-install mysqli pdo_mysql
+
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+RUN echo "xdebug.log_level=0" | sudo tee -a /usr/local/etc/php/php.ini
+
+USER vscode
+RUN mkdir -p ~/.config
+
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+    && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+RUN mkdir -p ~/.local/share/fonts \
+    && cd ~/.local/share/fonts \
+    && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf \
+    && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf \
+    && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf \
+    && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+
