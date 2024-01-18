@@ -1,5 +1,3 @@
 #! /bin/bash
 
-docker run -v $(pwd):/app \
-    -p 443:443 \
-    dunglas/frankenphp
+frankenphp php-server --domain localhost ./public
